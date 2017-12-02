@@ -109,6 +109,7 @@ while($true){
     foreach($Podcast in $Podcasts){
         [xml]$PodcastInfo = Get-Content (".\PodcastsConfig\" + $Podcast + ".xml")
         $ShortName = $PodcastInfo.$Podcast.shortname
+		Write-Host "Checking for a new episode of $ShortName..."
         if($PodcastInfo.$Podcast.userssFeed -eq "true" -or $forceRSS -eq 'true'){
             $LastReleaseTitle = $PodcastInfo.$Podcast.lastrssFeedTitle
             $rssUrl = $PodcastInfo.$Podcast.rssfeed
@@ -119,7 +120,6 @@ while($true){
             $DecimalAmount = $PodcastInfo.$Podcast.digits
             $LastReleasedId = [int]$PodcastInfo.$Podcast.LastReleasedPodcast
             $Url = ($PodcastInfo.$Podcast.url -replace '#ID_GOES_HERE#', ("{0:D$DecimalAmount}" -f ([int]($PodcastInfo.$Podcast.LastReleasedPodcast)+1)))
-            Write-Host $Url
             CheckURL -PodcastURL $Url -PodcastEpisodeId $LastReleasedId -PodcastTitle $Title
         }
     }
