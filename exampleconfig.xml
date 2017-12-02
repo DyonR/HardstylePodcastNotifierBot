@@ -1,0 +1,9 @@
+<config>
+     <TelegramSettings>
+          <BotToken>123456789:ABCDEFg1hIJK2LmNo3PQRsTuVwX-yZ4AB5</BotToken>
+          <ChatID>-1234567891234</ChatID>
+     </TelegramSettings>
+	<BotSettings>
+		<ForceRSS>false</ForceRSS>
+	</BotSettings>
+</config>
