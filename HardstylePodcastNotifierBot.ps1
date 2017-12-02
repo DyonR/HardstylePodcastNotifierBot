@@ -123,5 +123,5 @@ while($true){
             CheckURL -PodcastURL $Url -PodcastEpisodeId $LastReleasedId -PodcastTitle $Title
         }
     }
-    Start-Sleep 10
+    Start-Sleep 150
 }
