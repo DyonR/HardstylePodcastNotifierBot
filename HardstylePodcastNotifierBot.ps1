@@ -1,6 +1,6 @@
 ﻿#Get the path 
 $ScriptPath = Get-Location
-$Podcasts = ls $ScriptPath\PodcastsConfig\*.xml | ForEach-Object {$_.BaseName}
+$Podcasts = Get-ChildItem $ScriptPath\PodcastsConfig\*.xml | ForEach-Object {$_.BaseName}
 
 #Load the config
 [xml]$Config = Get-Content ".\config.xml"
@@ -120,7 +120,7 @@ function CheckRSS{
 while($true){
     foreach($Podcast in $Podcasts){
         [xml]$PodcastInfo = Get-Content (".\PodcastsConfig\" + $Podcast + ".xml")
-        $ShortName = $PodcastInfo.$Podcast.shortname
+        $ShortName = $PodcastInfo.$Podcast.shortName
 		Write-Host "Checking for a new episode of $ShortName..."
         if($PodcastInfo.$Podcast.userssFeed -eq "true" -or $forceRSS -eq 'true'){
             $LastReleaseTitle = $PodcastInfo.$Podcast.lastrssFeedTitle
