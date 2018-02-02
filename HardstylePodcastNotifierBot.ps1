@@ -60,14 +60,18 @@ function CheckRSS{
             $DownloadUrl = ($rssResponse.rss.channel.item | Select-Object -Last 1).origEnclosureLink
         }
         else{
-            $NewReleaseTitle = $rssResponse.rss.channel.item[0].title
-            $DownloadUrl = $rssResponse.rss.channel.item[0].enclosure.url
+            $NewReleaseTitle = $rssResponse.rss.channel.item.title | Select-Object -First 1
+            $DownloadUrl = $rssResponse.rss.channel.item.enclosure.url | Select-Object -First 1
         }
 
         if($NewReleaseTitle.Count -ne 1){$NewReleaseTitle = $NewReleaseTitle[0]}
 
         if($DownloadUrl.Contains('?')){
             $DownloadUrl = $DownloadUrl.Substring(0,$DownloadUrl.IndexOf('?'))
+        }
+
+        if($NewReleaseTitle.Contains('#')){
+            $NewReleaseTitle = $NewReleaseTitle -Replace '\#', '%23'
         }
 
         if($NewReleaseTitle -ne $LastReleaseTitle){
@@ -93,6 +97,9 @@ function CheckRSS{
             }
             if($NewReleaseTitleTelegram.Contains('&')){
                 $NewReleaseTitleTelegram = $NewReleaseTitleTelegram -Replace '\&', '%26'
+            }
+            if($NewReleaseTitleTelegram.Contains('|')){
+                $NewReleaseTitleTelegram = $NewReleaseTitleTelegram -Replace '\|', '%7c'
             }
             try{
             $TelegramResponse = Invoke-WebRequest -Uri "https://api.telegram.org/bot$TelegramBotToken/sendMessage?chat_id=$TelegramChatId&parse_mode=markdown&text=[$NewReleaseTitleTelegram]($DownloadUrlTelegram)" -Method POST
@@ -135,5 +142,5 @@ while($true){
             CheckURL -PodcastURL $Url -PodcastEpisodeId $LastReleasedId -PodcastTitle $Title
         }
     }
-    Start-Sleep 150
+    Start-Sleep 10
 }
