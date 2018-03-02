@@ -3,7 +3,7 @@ $ScriptPath = $PSScriptRoot
 $Podcasts = Get-ChildItem $ScriptPath\PodcastsConfig\*.xml | ForEach-Object {$_.BaseName}
 
 #Load the config
-[xml]$Config = Get-Content "$PSScriptRoot\config.xml"
+[xml]$Config = Get-Content "$ScriptPath\config.xml"
 
 #Telegram API Data
 $TelegramBotToken = $Config.config.TelegramSettings.BotToken
@@ -126,7 +126,7 @@ function CheckRSS{
 
 while($true){
     foreach($Podcast in $Podcasts){
-        [xml]$PodcastInfo = Get-Content ("$PSScriptRoot\PodcastsConfig\" + $Podcast + ".xml")
+        [xml]$PodcastInfo = Get-Content ("$ScriptPath\PodcastsConfig\" + $Podcast + ".xml")
         $ShortName = $PodcastInfo.$Podcast.shortName
 		Write-Host "Checking for a new episode of $ShortName..."
         if($PodcastInfo.$Podcast.userssFeed -eq "true" -or $forceRSS -eq 'true'){
