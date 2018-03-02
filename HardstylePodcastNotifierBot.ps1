@@ -105,7 +105,7 @@ function CheckRSS{
             $TelegramResponse = Invoke-WebRequest -Uri "https://api.telegram.org/bot$TelegramBotToken/sendMessage?chat_id=$TelegramChatId&parse_mode=markdown&text=[$NewReleaseTitleTelegram]($DownloadUrlTelegram)" -Method POST
                 if($TelegramResponse.StatusCode -eq "200"){
 				    Write-Host "New $ShortName! Message has successfully been sent."
-                    $PodcastInfo.$ShortName.ChildNodes.Item(7).'#text' = $NewReleaseTitle
+                    $PodcastInfo.$ShortName.ChildNodes.Item(7).'#text' = "$NewReleaseTitle"
                     $PodcastInfo.Save("$ScriptPath\PodcastsConfig\" + $ShortName + ".xml")
 		        }
             }
@@ -142,5 +142,6 @@ while($true){
             CheckURL -PodcastURL $Url -PodcastEpisodeId $LastReleasedId -PodcastTitle $Title
         }
     }
-    Start-Sleep 10
+    Get-Date -Format "HH:mm"
+    Start-Sleep 60
 }
