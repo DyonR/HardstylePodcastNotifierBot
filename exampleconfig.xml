@@ -5,5 +5,7 @@
      </TelegramSettings>
 	<BotSettings>
 		<ForceRSS>false</ForceRSS>
+		<SaveFiles>false</SaveFiles>
+		<SavePath>H:\Podcast Downloads</SavePath>
 	</BotSettings>
 </config>

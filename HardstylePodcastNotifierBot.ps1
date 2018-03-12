@@ -11,7 +11,17 @@ $TelegramChatId = $Config.config.TelegramSettings.ChatID
 
 #BotSettings
 $ForceRSS = $Config.config.BotSettings.ForceRSS
+$SaveFiles = $Config.config.BotSettings.SaveFiles
+$SavePath = $Config.config.BotSettings.SavePath
 
+#Disable Showing Progress of Invoke-Webrequest
+#SilentlyContinue = Don't show progress
+#Continue = Show progress
+$ProgressPreference = 'SilentlyContinue'
+
+if(!(Test-Path $SavePath)){
+    New-Item -ItemType Directory -Force -Path $SavePath
+}
 
 function CheckURL{
 
@@ -28,7 +38,13 @@ function CheckURL{
 			$TelegramResponse = Invoke-WebRequest -Uri "https://api.telegram.org/bot$TelegramBotToken/sendMessage?chat_id=$TelegramChatId&parse_mode=markdown&text=[$PodcastTitle$PodcastEpisodeId]($PodcastURL)" -Method POST
 			if($TelegramResponse.StatusCode -eq "200"){
 				Write-Host "New $ShortName Episode! Message has successfully been sent."
-				[int]$NewPodcastId = $PodcastEpisodeId
+                $OriginalName = [System.IO.Path]::GetFileName($PodcastURL)
+                if($SaveFiles){
+                    Write-Host "Downloading $OriginalName"
+					Invoke-WebRequest -Uri $PodcastURL -OutFile "$SavePath\$OriginalName"
+                    Write-Host "Download finished"
+                }
+                [int]$NewPodcastId = $PodcastEpisodeId
                 $PodcastInfo.$ShortName.ChildNodes.Item(1).'#text' = ($NewPodcastId++).ToString()
                 $PodcastInfo.Save("$ScriptPath\PodcastsConfig\" + $ShortName + ".xml")
                 return $true
@@ -63,6 +79,7 @@ function CheckRSS{
             $NewReleaseTitle = $rssResponse.rss.channel.item.title | Select-Object -First 1
             $DownloadUrl = $rssResponse.rss.channel.item.enclosure.url | Select-Object -First 1
         }
+
 
         if($NewReleaseTitle.Count -ne 1){$NewReleaseTitle = $NewReleaseTitle[0]}
 
@@ -101,10 +118,18 @@ function CheckRSS{
             if($NewReleaseTitleTelegram.Contains('|')){
                 $NewReleaseTitleTelegram = $NewReleaseTitleTelegram -Replace '\|', '%7c'
             }
+
+            $OriginalName = [System.IO.Path]::GetFileName($DownloadURL)
+
             try{
             $TelegramResponse = Invoke-WebRequest -Uri "https://api.telegram.org/bot$TelegramBotToken/sendMessage?chat_id=$TelegramChatId&parse_mode=markdown&text=[$NewReleaseTitleTelegram]($DownloadUrlTelegram)" -Method POST
                 if($TelegramResponse.StatusCode -eq "200"){
 				    Write-Host "New $ShortName! Message has successfully been sent."
+                    if($SaveFiles){
+                        Write-Host "Downloading $OriginalName"
+					    Invoke-WebRequest -Uri $DownloadUrlTelegram -OutFile "$SavePath\$OriginalName"
+                        Write-Host "Download finished"
+                    }
                     $PodcastInfo.$ShortName.ChildNodes.Item(7).'#text' = "$NewReleaseTitle"
                     $PodcastInfo.Save("$ScriptPath\PodcastsConfig\" + $ShortName + ".xml")
 		        }
