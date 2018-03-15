@@ -39,11 +39,16 @@ function CheckURL{
 			if($TelegramResponse.StatusCode -eq "200"){
 				Write-Host "New $ShortName Episode! Message has successfully been sent."
                 $OriginalName = [System.IO.Path]::GetFileName($PodcastURL)
-                if($SaveFiles){
-                    Write-Host "Downloading $OriginalName"
-					Invoke-WebRequest -Uri $PodcastURL -OutFile "$SavePath\$OriginalName"
-                    Write-Host "Download finished"
+                try{
+					if($SaveFiles){
+						Write-Host "Downloading $OriginalName"
+						Invoke-WebRequest -Uri $PodcastURL -OutFile "$SavePath\$OriginalName"
+						Write-Host "Download finished"
+					}
                 }
+				catch{
+					Write-Output "Failed to download $OriginalName`: `n$PodcastURL`n" | Out-File -Append "$SavePath\Failed Downloads.txt"
+				}
                 [int]$NewPodcastId = $PodcastEpisodeId
                 $PodcastInfo.$ShortName.ChildNodes.Item(1).'#text' = ($NewPodcastId++).ToString()
                 $PodcastInfo.Save("$ScriptPath\PodcastsConfig\" + $ShortName + ".xml")
@@ -125,11 +130,16 @@ function CheckRSS{
             $TelegramResponse = Invoke-WebRequest -Uri "https://api.telegram.org/bot$TelegramBotToken/sendMessage?chat_id=$TelegramChatId&parse_mode=markdown&text=[$NewReleaseTitleTelegram]($DownloadUrlTelegram)" -Method POST
                 if($TelegramResponse.StatusCode -eq "200"){
 				    Write-Host "New $ShortName! Message has successfully been sent."
-                    if($SaveFiles){
-                        Write-Host "Downloading $OriginalName"
-					    Invoke-WebRequest -Uri $DownloadUrlTelegram -OutFile "$SavePath\$OriginalName"
-                        Write-Host "Download finished"
+                    try{
+                        if($SaveFiles){
+                            Write-Host "Downloading $OriginalName"
+					        Invoke-WebRequest -Uri $DownloadUrlTelegram -OutFile "$SavePath\$OriginalName"
+                            Write-Host "Download finished"
+                        }
                     }
+				    catch{
+    					Write-Output "Failed to download $OriginalName`: `n$DownloadUrlTelegram`n" | Out-File -Append "$SavePath\Failed Downloads.txt"
+				    }
                     $PodcastInfo.$ShortName.ChildNodes.Item(7).'#text' = "$NewReleaseTitle"
                     $PodcastInfo.Save("$ScriptPath\PodcastsConfig\" + $ShortName + ".xml")
 		        }
