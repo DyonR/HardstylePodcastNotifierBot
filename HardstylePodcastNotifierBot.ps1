@@ -33,14 +33,14 @@ function CheckURL{
 
     $PodcastEpisodeId++
     try{
-        $PodcastUrlResponse = Invoke-WebRequest -Uri $PodcastURL -MaximumRedirection 0 -ErrorAction Ignore -DisableKeepAlive -UseBasicParsing -Method Head
+        $PodcastUrlResponse = Invoke-WebRequest -Uri $PodcastURL -ErrorAction Ignore -DisableKeepAlive -UseBasicParsing -Method Head
         try{
 			$TelegramResponse = Invoke-WebRequest -Uri "https://api.telegram.org/bot$TelegramBotToken/sendMessage?chat_id=$TelegramChatId&parse_mode=markdown&text=[$PodcastTitle$PodcastEpisodeId]($PodcastURL)" -Method POST
 			if($TelegramResponse.StatusCode -eq "200"){
 				Write-Host "New $ShortName Episode! Message has successfully been sent."
                 $OriginalName = [System.IO.Path]::GetFileName($PodcastURL)
                 try{
-					if($SaveFiles){
+					if($SaveFiles -eq $true){
 						Write-Host "Downloading $OriginalName"
 						Invoke-WebRequest -Uri $PodcastURL -OutFile "$SavePath\$OriginalName"
 						Write-Host "Download finished"
