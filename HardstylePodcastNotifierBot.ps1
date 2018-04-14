@@ -85,7 +85,6 @@ function CheckRSS{
             $DownloadUrl = $rssResponse.rss.channel.item.enclosure.url | Select-Object -First 1
         }
 
-
         if($NewReleaseTitle.Count -ne 1){$NewReleaseTitle = $NewReleaseTitle[0]}
 
         if($DownloadUrl.Contains('?')){
@@ -131,7 +130,7 @@ function CheckRSS{
                 if($TelegramResponse.StatusCode -eq "200"){
 				    Write-Host "New $ShortName! Message has successfully been sent."
                     try{
-                        if($SaveFiles){
+                        if($SaveFiles -eq $true){
                             Write-Host "Downloading $OriginalName"
 					        Invoke-WebRequest -Uri $DownloadUrlTelegram -OutFile "$SavePath\$OriginalName"
                             Write-Host "Download finished"
