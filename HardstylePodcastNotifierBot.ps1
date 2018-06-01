@@ -177,5 +177,5 @@ while($true){
         }
     }
     Get-Date -Format "HH:mm"
-    Start-Sleep 0
+    Start-Sleep 60
 }
