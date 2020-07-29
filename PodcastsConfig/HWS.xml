@@ -2,8 +2,7 @@
   <shortName>HWS</shortName>
   <LastReleasedPodcast>71</LastReleasedPodcast>
   <digits>2</digits>
-  <rssfeed>
-  </rssfeed>
+  <rssfeed>http://www.hardwithstyle.nl/?feed=podcast</rssfeed>
   <podcastTitle>HARD with STYLE - Episode %23</podcastTitle>
   <url>http://podcast.hardwithstyle.nl/HWS#ID_GOES_HERE#_Presented_by_Headhunterz.mp3</url>
   <userssFeed>false</userssFeed>

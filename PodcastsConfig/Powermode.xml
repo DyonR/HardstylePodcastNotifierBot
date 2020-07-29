@@ -2,7 +2,7 @@
   <shortName>Powermode</shortName>
   <LastReleasedPodcast>1</LastReleasedPodcast>
   <digits>2</digits>
-  <rssfeed>http://powermode.podbean.com/feed</rssfeed>
+  <rssfeed>https://feed.podbean.com/powermode/feed.xml</rssfeed>
   <podcastTitle>Powermode - Presented by Primeshock - Episode </podcastTitle>
   <url>http://powermode.podbean.com/mf/feed/af9pu7/_PWM#ID_GOES_HERE#_-_Powermode_-_Presented_by_Primeshock_320kbps_.mp3</url>
   <userssFeed>true</userssFeed>

@@ -1,11 +1,18 @@
 <config>
-     <TelegramSettings>
-          <BotToken>123456789:ABCDEFg1hIJK2LmNo3PQRsTuVwX-yZ4AB5</BotToken>
-          <ChatID>-1234567891234</ChatID>
-     </TelegramSettings>
+	<TelegramSettings>
+		<EnableTelegram>true</EnableTelegram>
+		<BotToken>123456789:ABCDEFg1hIJK2LmNo3PQRsTuVwX-yZ4AB5</BotToken>
+		<ChatID>>-1234567891234</ChatID>
+	</TelegramSettings>
+	<DiscordSettings>
+		<EnableDiscord>true</EnableDiscord>
+		<token>juWDzRpL75eR9Q0A0081qkaua5DDOKfAz6Fr3YN7mYOTyvuvr3Svp0I6H7GXE-wSwANf</token>
+		<channel_id>864064349269892682</channel_id>
+	</DiscordSettings>
 	<BotSettings>
 		<ForceRSS>false</ForceRSS>
-		<SaveFiles>false</SaveFiles>
-		<SavePath>H:\Podcast Downloads</SavePath>
+		<SaveFiles>true</SaveFiles>
+		<SavePath>/home/dyon/podcasts</SavePath>
+		<SaveToSubFolders>false</SaveToSubFolders>
 	</BotSettings>
 </config>
