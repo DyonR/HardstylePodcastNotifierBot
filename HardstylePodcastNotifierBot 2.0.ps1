@@ -76,9 +76,7 @@ function Read-RSS{
 				Send-Telegram -PodcastTitle $RssReleaseTitle -PodcastDownloadUrl $RssDownloadUrl
 			}
 			if($SaveFiles){
-				if(!($ShortName -eq "Brennan" -or $ShortName -eq "GlobalDedication")){
 				Get-File -PodcastDownloadUrl $RssDownloadUrl
-				}
 			}
 			[System.IO.File]::AppendAllLines([System.String]$TitlesStorage, [System.String[]]($RssReleaseTitle))
 		}
